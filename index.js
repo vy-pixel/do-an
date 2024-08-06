@@ -126,7 +126,7 @@ const server = http.createServer(app);
 
 import { Server } from "socket.io";
 const io = new Server(server);
-const port = 5000
+const port = 3000
 server.listen(port,()=>console.log(`[server]: Server is running at http://localhost:${port}`));
 connect();
 
@@ -139,7 +139,6 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res, next) => {
-  console.log(req.session.user);
   res.render("home", { message: "" });
 });
 
@@ -209,10 +208,22 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/automode", (req, res, next) => {
+  const user = req.session.user
+  console.log(req.session.user);
+
+  if(!user) {
+    return res.redirect('/login')
+  }
   res.render("automode", { imgBuffer: app.locals.imgBuffer });
 });
 
-app.get("/manualmode", (req, res, next) => {  
+app.get("/manualmode", (req, res, next) => {
+  const user = req.session.user
+  console.log(req.session.user);
+
+  if(!user) {
+    return res.redirect('/login')
+  }  
   res.render("manualmode", { imgBuffer: app.locals.imgBuffer });
 });
 
