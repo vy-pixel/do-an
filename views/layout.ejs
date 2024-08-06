@@ -1,0 +1,56 @@
+<!-- views/layout.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="CSS/layout.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <script src = "jquery.js"></script>
+    <script src="js/FC1_Common.js"></script>
+    <script src = "socket.io/socket.io.js"></script>
+
+  </head>
+  <body>
+    <div id="sidebar">
+      <ul class="top__sidebar">
+        <li><a href="/">Trang Chủ</a></li>
+        <li><a href="/automode">Chế độ Auto</a></li>
+        <li><a href="/manualmode">Chế độ Manual</a></li>
+      </ul>
+
+      <form method="post" action="/logout" id="logoutForm">
+        <ul class="bottom__sidebar">
+          <% if (user) { %>
+          <li>
+            <span><%= user.username %></span>
+          </li>
+          <li>
+            <button
+              type="submit"
+              id="logoutBtn"
+              style="
+                border: none;
+                background: none;
+                cursor: pointer;
+              "
+            >
+              Đăng Xuất
+            </button>
+          </li>
+          <% } else { %>
+          <li><a href="/login">Đăng Nhập</a></li>
+          <li><a href="/signup">Đăng Ký</a></li>
+          <% } %>
+        </ul>
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<%- include('layout', { title: 'Chế độ Auto' }) %>
+    <link rel="stylesheet" href="CSS/webcam.css">
+    <div id="mainpage">
+        <!-- <div class="poster">
+            <img src="https://res.cloudinary.com/dd4jics71/image/upload/v1702654961/anh%20cua%20chien/auto_screen_n1yjnb.png"
+                class="img__main" loading="lazy" />
+        </div> -->
+      
+    </div>
+    <div id="container">
+        <span>camera</span>
+        <div id="imageContainer">
+            <img id="currentImage" src="<%= imgBuffer ? '/current-image?' + new Date().getTime() : '' %>" alt="Current Image" style="width: 320px; height: 240px;" />
+        </div>
+    </div>
+    <script>
+        function refreshImage() {
+        var imageElement = document.getElementById('currentImage');
+        imageElement.src = '/current-image?' + new Date().getTime(); // Append timestamp to avoid caching
+    }   
+    setInterval(refreshImage,0.000000000000000000000000000000000000000000000000000001)   
+    </script>

@@ -1,0 +1,86 @@
+.signup__form {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 80vh;
+    border-radius: 20px;
+    display: flex;
+    flex-flow: column;
+    gap: 25px;
+    padding: 20px 40px;
+    background: linear-gradient(180deg, #5068f0 0%, #FFFFFF 30.21%);
+    box-shadow: 0px 187px 75px rgba(0, 0, 0, 0.01), 0px 105px 63px rgba(0, 0, 0, 0.05), 0px 47px 47px rgba(0, 0, 0, 0.09), 0px 12px 26px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
+}
+
+.signup__form h3 {
+    text-align: center;
+    font-weight: 500;
+}
+
+.signup__form span {
+    text-align: center;
+    font-weight: 600px;
+    font-style: italic;
+    margin-bottom: 40px;
+}
+
+.signup__form .input__box {
+    width: 100%;
+    position: relative;
+}
+
+.signup__form .input__box input {
+    font-size: 100%;
+    padding: 0.8em;
+    outline: none;
+    border: 2px solid rgb(200, 200, 200);
+    background-color: #ffffff;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.signup__form .input__box label {
+    font-size: 100%;
+    position: absolute;
+    left: 0;
+    padding: 0.8em;
+    margin-left: 0.5em;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    color: rgb(100, 100, 100);
+}
+
+.signup__form .input__box :is(input:focus, input:valid)~label {
+    transform: translateY(-75%) scale(.9);
+    margin: 0em;
+    margin-left: 1.3em;
+    padding: 0.4em;
+    background-color: transparent;
+}
+
+.signup__form .input__box :is(input:focus, input:valid) {
+    border-color: #16161b;
+}
+
+.signup__form .input__box .show__password {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+}
+
+.signup__form button {
+    padding: 10px 0;
+    border-radius: 10px;
+    background-color: #5068f0;
+    color: #ffffff;
+}
+
+.signup__form .message {
+    color: rgb(184, 42, 42);
+    font-size: 18px;
+}

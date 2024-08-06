@@ -1,0 +1,71 @@
+<%- include('layout', { title: 'Đăng Ký' }) %>
+<link rel="stylesheet" href="CSS/signup.css" />
+<div id="mainpage">
+  <form
+    action="/signup"
+    method="POST"
+    class="signup__form"
+    id="signupForm"
+  >
+    <h3>Đăng Ký</h3>
+    <% if (message) { %>
+    <span class="message"><%= message %></span>
+    <% } else { %>
+    <span>Chào mừng đến với trang web của chúng tôi</span>
+    <% } %>
+    <div class="input__box">
+      <input
+        type="text"
+        name="email"
+        required=""
+        autocomplete="off"
+      />
+      <label for="email">Email</label>
+    </div>
+    <div class="input__box">
+      <input
+        type="text"
+        name="username"
+        required=""
+        autocomplete="off"
+      />
+      <label for="name">Tên tài khoản</label>
+    </div>
+    <div class="input__box">
+      <input
+        type="password"
+        name="password"
+        required=""
+        autocomplete="off"
+        class="password"
+      />
+      <label for="password">Mật khẩu</label>
+      <span
+        class="material-symbols-outlined show__password"
+        id="switch__password"
+      >
+        visibility_off
+      </span>
+    </div>
+    <div class="input__box">
+      <input
+        type="password"
+        name="passwordConfirm"
+        required=""
+        autocomplete="off"
+        class="password"
+      />
+      <label for="passwordConfirm">Xác thực mật khẩu</label>
+      <span
+        class="material-symbols-outlined show__password"
+        id="switch__password"
+      >
+        visibility_off
+      </span>
+    </div>
+    <button type="submit">Đăng ký</button>
+    <span>Đã có tài khoản ? <a href="/login">Đăng nhập</a></span>
+  </form>
+</div>
+
+<script src="js/signup.js"></script>
