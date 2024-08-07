@@ -10,14 +10,7 @@
     </div>
     <div id="container">
         <span>camera</span>
-        <div id="imageContainer">
-            <img id="currentImage" src="<%= imgBuffer ? '/current-image?' + new Date().getTime() : '' %>" alt="Current Image" style="width: 320px; height: 240px;" />
-        </div>
+        <%- include('frame', {}) %>
+        
     </div>
-    <script>
-        function refreshImage() {
-        var imageElement = document.getElementById('currentImage');
-        imageElement.src = '/current-image?' + new Date().getTime(); // Append timestamp to avoid caching
-    }   
-  setInterval(refreshImage,0.000000000000000000000000000000000000000000000000000001)
-    </script>
+    

@@ -208,22 +208,22 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/automode", (req, res, next) => {
-  const user = req.session.user
-  console.log(req.session.user);
+  // const user = req.session.user
+  // console.log(req.session.user);
 
-  if(!user) {
-    return res.redirect('/login')
-  }
+  // if(!user) {
+  //   return res.redirect('/login')
+  // }
   res.render("automode", { imgBuffer: app.locals.imgBuffer });
 });
 
 app.get("/manualmode", (req, res, next) => {
-  const user = req.session.user
-  console.log(req.session.user);
+  // const user = req.session.user
+  // console.log(req.session.user);
 
-  if(!user) {
-    return res.redirect('/login')
-  }  
+  // if(!user) {
+  //   return res.redirect('/login')
+  // }  
   res.render("manualmode", { imgBuffer: app.locals.imgBuffer });
 });
 

@@ -8,7 +8,7 @@ def send_frame_to_server(frame_bytes):
     """
     try:
         response = requests.post(
-            'http://localhost:5000/uploads',
+            'http://localhost:3000/uploads',
             files={'file': ('frame.jpg', frame_bytes, 'image/jpeg')}
         )
         

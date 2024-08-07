@@ -21,8 +21,10 @@
     right: 20px;
     bottom: 0;
     height: 270px;
+    width: 320px;
     display: flex;
     flex-flow: column;
     align-items: center;
     gap: 5px;
 }
+

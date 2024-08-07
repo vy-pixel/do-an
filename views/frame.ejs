@@ -1,0 +1,12 @@
+
+<div id="imageContainer">
+    <img id="currentImage" src="<%= imgBuffer ? '/current-image?' + new Date().getTime() : 'https://techdator.net/wp-content/uploads/2020/11/GCam-8.0.png' %>" alt="Current Image" style="width: 320px; height: 240px;" />
+</div>
+<script>
+    function refreshImage() {
+        var imageElement = document.getElementById('currentImage');
+  
+    imageElement.src = '/current-image?' + new Date().getTime(); // Append timestamp to avoid caching
+}   
+setInterval(refreshImage,1)
+</script>
