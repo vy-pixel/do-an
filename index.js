@@ -227,6 +227,10 @@ app.get("/manualmode", (req, res, next) => {
   res.render("manualmode", { imgBuffer: app.locals.imgBuffer });
 });
 
+app.get('/gioithieu', (req, res, next) => {
+  res.render('gioithieu', {imgBuffer: app.locals.imgBuffer})
+});
+
 app.post('/uploads', upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).send('No file uploaded.');
   
