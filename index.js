@@ -6,14 +6,41 @@ import session from "express-session";
 import lodash from "lodash";
 import nodes7 from "nodes7";
 import upload from "./config/upload.js";
-var conn_plc = new nodes7();
-conn_plc.initiateConnection(
-  { port: 102, host: "192.168.1.9", rack: 0, slot: 1 },
-  PLC_connected
+
+// /////////////////////////++KẾT NỐI WEBSERVER VỚI PLC++/////////////////////////
+// KHỞI TẠO KẾT NỐI PLC
+var conn_plc1 = new nodes7();
+var conn_plc2 = new nodes7();
+conn_plc1.initiateConnection(
+  { port: 102, host: "192.168.0.1", rack: 0, slot: 1 },
+  PLC1_connected
+);
+conn_plc2.initiateConnection(
+  { port: 102, host: "192.168.0.2", rack: 0, slot: 1 },
+  PLC2_connected
 );
 
 
-////////////// CÁC KHỐI CHƯƠNG TRÌNH CON //////////////
+// triger ghi dữ liệu vào SQL
+var insert_trigger = false;			// Trigger
+var old_insert_trigger = false;		// Trigger old
+// triger ghi dữ liệu cảnh báo vào SQL
+var Alarm_ID1 = false;			// Trigger Alarm add ID1
+var Alarm_ID2 = false;			// Trigger Alarm add ID2
+var Alarm_ID3 = false;			// Trigger Alarm add ID3
+var Alarm_ID4 = false;			// Trigger Alarm add ID4
+var Alarm_ID5 = false;			// Trigger Alarm add ID5
+
+var Alarm_ID1_old = false;		// Trigger alarm old ID1
+var Alarm_ID2_old = false;		// Trigger alarm old ID2
+var Alarm_ID3_old = false;		// Trigger alarm old ID3
+var Alarm_ID4_old = false;		// Trigger alarm old ID4
+var Alarm_ID5_old = false;		// Trigger alarm old ID5
+// Mảng xuất dữ liệu report Excel
+var SQL_Excel = [];  // Dữ liệu nhập kho
+
+
+// Bảng tag trong Visual studio code
 var tags_list = {
   btt_Start: "DB37,X0.0",
   btt_Stop: "DB37,X0.1",
@@ -47,15 +74,16 @@ var tags_list = {
   Act_Error_Products_R: "DB37,INT12",
 };
 
-////////////// CÁC KHỐI CHƯƠNG TRÌNH CON //////////////
-function PLC_connected(err) {
+// GỬI DỮ LIỆu TAG CHO PLC
+// PLC1
+function PLC1_connected(err) {
   if (typeof err !== "undefined") {
-    console.log(err);
+    console.log(err); // Hiển thị lỗi nếu không kết nối đƯỢc với PLC
   }
-  conn_plc.setTranslationCB(function (tag) {
-    return tags_list[tag];
+  conn_plc1.setTranslationCB(function (tag) {
+    return tags_list[tag]; // Đưa giá trị đọc lên từ PLC và mảng
   });
-  conn_plc.addItems([
+  conn_plc1.addItems([
     "btt_Start",
     "btt_Stop",
     "btt_auto",
@@ -89,6 +117,21 @@ function PLC_connected(err) {
   ]);
 }
 
+// PLC2
+function PLC2_connected(err) {
+  if (typeof err !== "undefined") {
+    console.log(err); // Hiển thị lỗi nếu không kết nối đƯỢc với PLC
+  }
+  conn_plc2.setTranslationCB(function (tag) {
+    return tags_list[tag]; // Đưa giá trị đọc lên từ PLC và mảng
+  });
+  conn_plc2.addItems([
+    
+  ]);
+}
+
+
+
 ////////////// CÁC KHỐI CHƯƠNG TRÌNH CON //////////////
 var arr_tag_value = [];
 function valuesReady(anythingBad, values) {
@@ -99,15 +142,20 @@ function valuesReady(anythingBad, values) {
   console.log(values);
 }
 
-////////////// CÁC KHỐI CHƯƠNG TRÌNH CON //////////////
+// Hàm chức năng scan giá trị
 function fn_read_data_scan() {
-  conn_plc.readAllItems(valuesReady);
+  conn_plc1.readAllItems(valuesReady);
+  conn_plc2.readAllItems(valuesReady);
+  fn_sql_insert();
+  fn_Alarm_Manage();
 }
+
+// Time cập nhật mỗi 1s
 // setInterval(() => fn_read_data_scan(), 1000);
 
 
 
-////////////// CÁC KHỐI CHƯƠNG TRÌNH CON //////////////
+////////////// THIẾT LẬP KẾT NỐI WEB //////////////
 const app = express();
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -121,6 +169,7 @@ app.use(
   })
 );
 
+// /////////////////////////++THIẾT LẬP KẾT NỐI WEB++/////////////////////////
 import http from "http";
 const server = http.createServer(app);
 
@@ -138,6 +187,7 @@ app.use((req, res, next) => {
   next();
 });
 
+////////////// ĐĂNG NHẬP-ĐĂNG KÝ //////////////
 app.get("/", (req, res, next) => {
   res.render("home", { message: "" });
 });
@@ -207,6 +257,7 @@ app.post("/logout", (req, res) => {
   res.redirect("/login");
 });
 
+////////////// TRANG AUTO/MANUAL MODE //////////////
 app.get("/automode", (req, res, next) => {
   // const user = req.session.user
   // console.log(req.session.user);
@@ -227,10 +278,13 @@ app.get("/manualmode", (req, res, next) => {
   res.render("manualmode", { imgBuffer: app.locals.imgBuffer });
 });
 
+////////////// TRANG GIOI THIEU //////////////
 app.get('/gioithieu', (req, res, next) => {
   res.render('gioithieu', {imgBuffer: app.locals.imgBuffer})
 });
 
+
+////////////// TRUYỀN DỮ LIỆU TỪ CAM PYTHON //////////////
 app.post('/uploads', upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).send('No file uploaded.');
   
